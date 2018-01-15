@@ -1,0 +1,450 @@
+---
+# General
+install_type: 'git'
+php_version: '7.2'
+phar_version: '1.1.0'
+php_repository: {name: 'php-src',url: 'https://github.com/php/php-src.git',tag: "PHP-{{ php_version }}"}
+required_packages: ['epel-release', 'vim', 'git', 'wget', 'gcc',
+                    'pcre-devel', 'openssl-devel', 'expat-devel', 'bzip2-devel', 'curl-devel', 'libjpeg-devel',
+                    'libpng-devel', 'freetype-devel', 'libc-client-devel', 'libmcrypt-devel', 'libxml2-devel']
+compiling_path: '/home/sources'
+php_install_dir: '/usr'
+php_configuration_dir: '/etc'
+php_fpm_log_dir: '/var/log/php-fpm'
+php_fpm_session_save_path: '/var/lib/php/fpm/session'
+php_fpm_soap_wsdl_cache_dir: '/var/lib/php/fpm/wsdlcache'
+php_fpm_opcache_file_cache: '/var/lib/php/fpm/opcache'
+
+# Option used to configure our php compilation
+php_core_extension_options: '--with-pcre-regex'
+php_bundled_extension_options: "--enable-bcmath --enable-ftp --enable-exif --enable-sockets --enable-calendar --enable-mbstring --enable-mbregex --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-opcache --enable-fpm --sysconfdir={{ php_configuration_dir }} --with-gd --with-jpeg-dir --with-png-dir --with-freetype-dir --with-zlib-dir --with-zlib --with-imap --with-imap-ssl --with-kerberos --with-xmlrpc"
+php_external_extension_options: '--enable-soap --enable-zip --with-bz2 --with-curl  --with-mhash --with-openssl --with-mysql-sock=/tmp/mysql.sock --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd'
+php_configure_options: "--with-libdir=lib64 --enable-inline-optimization {{ php_core_extension_options }} {{ php_bundled_extension_options }} {{ php_external_extension_options }}"
+
+
+# PHP fpm configuration of pools
+php_pools:
+  - {name: 'www',
+#     prefix: '/path/to/pools/$pool',
+     user: 'daemon',
+     group: 'daemon',
+     listen_ip: '127.0.0.1',
+     listen_port: '9000',
+#     listen_socket: '/run/php-fpm/www.sock',
+#     listen.backlog: '511',
+#     listen.owner: 'apache',
+#     listen.group: 'apache',
+     listen.mode: '0660',
+#     listen.acl_users: '',
+#     listen.acl_groups: '',
+     listen.allowed_clients: '127.0.0.1',
+#     process.priority: '-19',
+     pm: 'dynamic',
+     pm.max_children: '50',
+     pm.start_servers: '5',
+     pm.min_spare_servers: '5',
+     pm.max_spare_servers: '35',
+#     pm.process_idle_timeout: '10s',
+#     pm.max_requests: '500',
+#     pm.status_path: '/status',
+#     ping.path: '/ping',
+#     ping.response: 'pong',
+#     access.log: 'log/$pool.access.log',
+#     access.format: '"%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"',
+     slowlog: "{{ php_fpm_log_dir }}/www-slow.log",
+#     request_slowlog_timeout: '0',
+#     request_terminate_timeout: '0',
+#     rlimit_files: '1024',
+#     rlimit_core: '0',
+#     chroot: '',
+#     chdir: '/var/www',
+#     catch_workers_output: 'yes',
+#     clear_env: 'no',
+#     security.limit_extensions: '.php .php3 .php4 .php5 .php7',
+     env_vars_php_settings: [
+#                             'env[HOSTNAME] = $HOSTNAME',
+#                             'env[PATH] = /usr/local/bin:/usr/bin:/bin',
+#                             'env[TMP] = /tmp',
+#                             'env[TMPDIR] = /tmp',
+#                             'env[TEMP] = /tmp',
+#                             'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com',
+#                             'php_flag[display_errors] = off',
+                             "php_admin_value[error_log] = {{ php_fpm_log_dir }}/www-error.log",
+                             'php_admin_flag[log_errors] = on',
+#                             'php_admin_value[memory_limit] = 128M',
+                             'php_value[session.save_handler] = files',
+                             "php_value[session.save_path]    = {{ php_fpm_session_save_path }}",
+                             "php_value[soap.wsdl_cache_dir]  = {{ php_fpm_soap_wsdl_cache_dir }}"
+#                             "php_value[opcache.file_cache]  = {{ php_fpm_opcache_file_cache }}"
+                             ]
+     }
+
+
+
+
+# php.ini
+# http://php.net/manual/en/ini.list.php
+
+###############################
+####### CORE DIRECTIVES #######
+###############################
+# http://php.net/manual/en/ini.core.php
+
+#------------------
+# Language and Misc
+#------------------
+short_open_tag: '1'
+asp_tags: '0'
+precision: '14'
+serialize_precision: '-1'
+y2k_compliance: '1'
+allow_call_time_pass_reference: '1'
+disable_functions: ''
+disable_classes: ''
+exit_on_timeout: ''
+expose_php: '1'
+zend_multibyte: '0'
+mbstring_script_encoding: 'NULL'
+zend_script_encoding: 'NULL'
+zend_signal_check: '0'
+zend_assertions: '1'
+zend_ze1_compatibility_mode: '0'
+detect_unicode: '1'
+zend_detect_unicode: '1'
+
+#----------------
+# Resource Limits
+#----------------
+memory_limit: '128M'
+
+#-------------------
+# Performance Tuning
+#-------------------
+realpath_cache_size: '16K'
+realpath_cache_ttl: '120'
+
+#--------------
+# Data Handling
+#--------------
+arg_separator_output: '&'
+arg_separator_input: '&'
+variables_order: 'EGPCS'
+request_order: ''
+auto_globals_jit: '1'
+register_globals: '0'
+register_argc_argv: '1'
+register_long_arrays: '1'
+enable_post_data_reading: 'On'
+post_max_size: '8M'
+auto_prepend_file: 'NULL'
+auto_append_file: 'NULL'
+default_mimetype: 'text/html'
+default_charset: 'UTF-8'
+always_populate_raw_post_data: '0'
+
+#----------------------
+# Paths and Directories
+#----------------------
+include_path: '_;/path/to/php/pear'
+open_basedir: 'NULL'
+doc_root: 'NULL'
+user_dir: 'NULL'
+extension_dir: 'NUL'
+extension: 'NULL'
+zend_extension: 'opcache.so'
+zend_extension_debug: 'NULL'
+zend_extension_debug_ts: 'NULL'
+zend_extension_ts: 'NULL'
+cgi_check_shebang_line: '1'
+cgi_discard_path: '0'
+cgi_fix_pathinfo: '1'
+cgi_force_redirect: '1'
+cgi_nph: '0'
+cgi_redirect_status_env: 'NULL'
+cgi_rfc2616_headers: '0'
+fastcgi_impersonate: '0'
+fastcgi_logging: '1'
+
+#-------------
+# File Uploads
+#-------------
+file_uploads: '1'
+upload_tmp_dir: 'NULL'
+max_input_time: '-1'
+max_input_nesting_level: '64'
+max_input_vars: '1000'
+upload_max_filesize: '2M'
+max_file_uploads: '20'
+
+#------------
+# General SQL
+#------------
+sql_safe_mode: '0'
+
+
+
+
+###############################
+####### CORE EXTENSIONS #######
+###############################
+# http://php.net/manual/en/extensions.membership.php#extensions.membership.core
+
+#---------------------------
+# CORE EXTENSION - Date/Time
+#---------------------------
+date_default_latitude: '31.7667'
+date_default_longitude: '35.2333'
+date_sunrise_zenith: '90.583333'
+date_sunset_zenith: '90.583333'
+date_timezone: ''
+
+#--------------------------------
+# CORE EXTENSION - Error Handling
+#--------------------------------
+error_reporting: 'NULL'
+display_errors: '1'
+display_startup_errors: '0'
+log_errors: '0'
+log_errors_max_len: '1024'
+ignore_repeated_errors: '0'
+ignore_repeated_source: '0'
+report_memleaks: '1'
+track_errors: '0'
+html_errors: '1'
+xmlrpc_errors: '0'
+xmlrpc_error_number: '0'
+docref_root: ''
+docref_ext: ''
+error_append_string: 'NULL'
+error_prepend_string: 'NULL'
+error_log: ''
+
+#----------------------------
+# CORE EXTENSION - Filesystem
+#----------------------------
+allow_url_fopen: '1'
+allow_url_include: '0'
+user_agent: 'NULL'
+default_socket_timeout: '60'
+from: ''
+auto_detect_line_endings: '0'
+
+#------------------------
+# CORE EXTENSION - Filter
+#------------------------
+filter_default: 'unsafe_raw'
+filter_default_flags: 'NULL'
+
+#----------------------------------
+# CORE EXTENSION - PHP Options/Info
+#----------------------------------
+assert_active: '1'
+assert_bail: '0'
+assert_warning: '1'
+assert_callback: 'NULL'
+assert_quiet_eval: '0'
+assert_exception: '0'
+enable_dl: '1'
+max_execution_time: '30'
+magic_quotes_gpc: '1'
+magic_quotes_runtime: '0'
+zend_enable_gc: '1'
+
+#----------------------
+# CORE EXTENSION - Mail
+#----------------------
+mail_add_x_header: '0'
+mail_log: ''
+mail_force_extra_parameters: 'NULL'
+SMTP: 'localhost'
+smtp_port: '25'
+sendmail_from: 'NULL'
+sendmail_path: '/usr/sbin/sendmail -t -i'
+
+#-----------------------
+# CORE EXTENSION - Misc.
+#-----------------------
+ignore_user_abort: '0'
+highlight_string: '#DD0000'
+highlight_comment: '#FF8000'
+highlight_keyword: '#007700'
+highlight_bg: '#FFFFFF'
+highlight_default: '#0000BB'
+highlight_html: '#000000'
+browscap: 'NULL'
+
+#-------------------------
+# CORE EXTENSION - Network
+#-------------------------
+define_syslog_variables: '0'
+
+#--------------------------------
+# CORE EXTENSION - Output Control
+#--------------------------------
+output_buffering: '0'
+output_handler: 'NULL'
+implicit_flush: '0'
+url_rewriter_tags: 'a=href,area=href,frame=src,form=,fieldset='
+url_rewriter_hosts: "$_SERVER['HTTP_HOST']"
+
+#----------------------
+# CORE EXTENSION - Phar
+#----------------------
+phar_readonly: '1'
+phar_require_hash: '1'
+phar_extract_list: ''
+phar_cache_list: ''
+
+#--------------------------
+# CORE EXTENSION - Sessions
+#--------------------------
+session_save_path: ''
+session_name: 'PHPSESSID'
+session_save_handler: 'files'
+session_auto_start: '0'
+session_gc_probability: '1'
+session_gc_divisor: '100'
+session_gc_maxlifetime: '1440'
+session_serialize_handler: 'php'
+session_cookie_lifetime: '0'
+session_cookie_path: '/'
+session_cookie_domain: ''
+session_cookie_secure: ''
+session_cookie_httponly: ''
+session_use_strict_mode: '0'
+session_use_cookies: '1'
+session_use_only_cookies: '1'
+session_referer_check: ''
+session_cache_limiter: 'nocache'
+session_cache_expire: '180'
+session_use_trans_sid: '0'
+session_trans_sid_tags: 'a=href,area=href,frame=src,form='
+session_trans_sid_hosts: "$_SERVER['HTTP_HOST']"
+session_sid_length: '32'
+session_sid_bits_per_character: '32'
+session_upload_progress_enabled: '1'
+session_upload_progress_cleanup: '1'
+session_upload_progress_prefix: 'upload_progress_'
+session_upload_progress_name: 'PHP_SESSION_UPLOAD_PROGRESS'
+session_upload_progress_freq: '1%'
+session_upload_progress_min_freq: '1'
+session_lazy_write: '1'
+session_hash_function: '0'
+session_hash_bits_per_character: '5'
+session_entropy_file: ''
+session_entropy_length: '0'
+session_bug_compat_42: '1'
+session_bug_compat_warn: '1'
+
+#-----------------------------------
+# CORE EXTENSION - Variable handling
+#-----------------------------------
+unserialize_callback_func: 'NULL'
+
+
+
+
+################################
+###### BUNDLED EXTENSIONS ######
+################################
+# http://php.net/manual/en/extensions.membership.php#extensions.membership.bundled
+
+#---------------------------
+# BUNDLED EXTENSION - Apache
+#---------------------------
+engine: '1'
+child_terminate: '0'
+last_modified: '0'
+xbithack: '0'
+
+#----------------------------
+# BUNDLED EXTENSION - BC Math
+#----------------------------
+bcmath_scale: '0'
+
+#------------------------
+# BUNDLED EXTENSION - COM
+#------------------------
+com_allow_dcom: '0'
+com_autoregister_typelib: '0'
+com_autoregister_verbose: '0'
+com_autoregister_casesensitive: '1'
+com_code_page: ''
+com_typelib_file: ''
+
+#------------------------
+# BUNDLED EXTENSION - DBA
+#------------------------
+dba_default_handler: ''
+
+#-------------------------
+# BUNDLED EXTENSION - Exif
+#-------------------------
+exif_encode_unicode: 'ISO-8859-15'
+exif_decode_unicode_motorola: 'UCS-2BE'
+exif_decode_unicode_intel: 'UCS-2LE'
+exif_encode_jis: ''
+exif_decode_jis_motorola: 'JIS'
+exif_decode_jis_intel: 'JIS'
+
+#--------------------------
+# BUNDLED EXTENSION - iconv
+#--------------------------
+iconv_input_encoding: 'ISO-8859-1'
+iconv_output_encoding: 'ISO-8859-1'
+iconv_internal_encoding: 'ISO-8859-1'
+
+#-----------------------
+# BUNDLED EXTENSION - GD
+#-----------------------
+gd_jpeg_ignore_warning: '1'
+
+#-------------------------
+# BUNDLED EXTENSION - intl
+#-------------------------
+intl_default_locale: ''
+intl_error_level: '0'
+intl_use_exceptions: '0'
+
+#-------------------------------------
+# BUNDLED EXTENSION - Multibyte String
+#-------------------------------------
+mbstring_language: 'neutral'
+mbstring_detect_order: 'NULL'
+mbstring_http_input: 'pass'
+mbstring_http_output: 'pass'
+mbstring_internal_encoding: 'NULL'
+mbstring_substitute_character: 'NULL'
+mbstring_func_overload: '0'
+mbstring_encoding_translation: '0'
+mbstring_strict_detection: '0'
+mbstring_http_output_conv_mimetypes: '^(text/|application/xhtml\+xml)'
+
+#--------------------------
+# BUNDLED EXTENSION - NSAPI
+#--------------------------
+nsapi_read_timeout: '60'
+
+#-------------------------
+# BUNDLED EXTENSION - PCRE
+#-------------------------
+pcre_backtrack_limit: '1000000'
+pcre_recursion_limit: '1000000'
+pcre_jit: '1'
+
+#------------------------------
+# BUNDLED EXTENSION - Semaphore
+#------------------------------
+sysvshm_init_mem: '10000'
+
+#----------------------------
+# BUNDLED EXTENSION - SQLite3
+#----------------------------
+sqlite3_extension_dir: ''
+
+#-------------------------
+# BUNDLED EXTENSION - Zlib
+#-------------------------
+zlib_output_compression: '0'
+zlib_output_compression_level: '-1'
+zlib_output_handler: ''

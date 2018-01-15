@@ -1,0 +1,148 @@
+{% for php_pool in php_pools %}
+[{{ php_pool['name'] }}]
+
+;If socket is denied it will override ip and port
+{% if (php_pool['listen_socket'] is defined) %}
+listen = {{ php_pool['listen_socket'] }}
+{% elif (php_pool['listen_ip'] is defined) and (php_pool['listen_port'] is defined) %}
+listen = {{ php_pool['listen_ip'] }}:{{ php_pool['listen_port'] }}
+{% endif %}
+
+{% if (php_pool['listen.backlog'] is defined) %}
+listen.backlog = {{ php_pool['listen.backlog'] }}
+{% endif %}
+
+{% if (php_pool['listen.allowed_clients'] is defined) %}
+listen.allowed_clients = {{ php_pool['listen.allowed_clients'] }}
+{% endif %}
+
+{% if (php_pool['listen.owner'] is defined) %}
+listen.owner = {{ php_pool['listen.owner'] }}
+{% endif %}
+
+{% if (php_pool['listen.group'] is defined) %}
+listen.group = {{ php_pool['listen.group'] }}
+{% endif %}
+
+{% if (php_pool['listen.mode'] is defined) %}
+listen.mode = {{ php_pool['listen.mode'] }}
+{% endif %}
+
+{% if (php_pool['listen.acl_users'] is defined) %}
+listen.acl_users = {{ php_pool['listen.acl_users'] }}
+{% endif %}
+
+{% if (php_pool['listen.acl_groups'] is defined) %}
+listen.acl_groups = {{ php_pool['listen.acl_groups'] }}
+{% endif %}
+
+{% if (php_pool['user'] is defined) %}
+user = {{ php_pool['user'] }}
+{% endif %}
+
+{% if (php_pool['group'] is defined) %}
+group = {{ php_pool['group'] }}
+{% endif %}
+
+{% if (php_pool['pm'] is defined) %}
+pm = {{ php_pool['pm'] }}
+{% endif %}
+
+{% if (php_pool['pm.max_children'] is defined) %}
+pm.max_children = {{ php_pool['pm.max_children'] }}
+{% endif %}
+
+{% if (php_pool['pm.start_servers'] is defined) %}
+pm.start_servers = {{ php_pool['pm.start_servers'] }}
+{% endif %}
+
+{% if (php_pool['pm.min_spare_servers'] is defined) %}
+pm.min_spare_servers = {{ php_pool['pm.min_spare_servers'] }}
+{% endif %}
+
+{% if (php_pool['pm.max_spare_servers'] is defined) %}
+pm.max_spare_servers = {{ php_pool['pm.max_spare_servers'] }}
+{% endif %}
+
+{% if (php_pool['pm.process_idle_timeout'] is defined) %}
+pm.process_idle_timeout = {{ php_pool['pm.process_idle_timeout'] }}
+{% endif %}
+
+{% if (php_pool['pm.max_requests'] is defined) %}
+pm.max_requests = {{ php_pool['pm.max_requests'] }}
+{% endif %}
+
+{% if (php_pool['pm.status_path'] is defined) %}
+pm.status_path = {{ php_pool['pm.status_path'] }}
+{% endif %}
+
+{% if (php_pool['ping.path'] is defined) %}
+ping.path = {{ php_pool['ping.path'] }}
+{% endif %}
+
+{% if (php_pool['ping.response'] is defined) %}
+ping.response = {{ php_pool['ping.response'] }}
+{% endif %}
+
+{% if (php_pool['process.priority'] is defined) %}
+process.priority = {{ php_pool['process.priority'] }}
+{% endif %}
+
+{% if (php_pool['prefix'] is defined) %}
+prefix = {{ php_pool['prefix'] }}
+{% endif %}
+
+{% if (php_pool['request_terminate_timeout'] is defined) %}
+request_terminate_timeout = {{ php_pool['request_terminate_timeout'] }}
+{% endif %}
+
+{% if (php_pool['request_slowlog_timeout'] is defined) %}
+request_slowlog_timeout = {{ php_pool['request_slowlog_timeout'] }}
+{% endif %}
+
+{% if (php_pool['slowlog'] is defined) %}
+slowlog = {{ php_pool['slowlog'] }}
+{% endif %}
+
+{% if (php_pool['rlimit_files'] is defined) %}
+rlimit_files = {{ php_pool['rlimit_files'] }}
+{% endif %}
+
+{% if (php_pool['rlimit_core'] is defined) %}
+rlimit_core = {{ php_pool['rlimit_core'] }}
+{% endif %}
+
+{% if (php_pool['chroot'] is defined) %}
+chroot = {{ php_pool['chroot'] }}
+{% endif %}
+
+{% if (php_pool['chdir'] is defined) %}
+chdir = {{ php_pool['chdir'] }}
+{% endif %}
+
+{% if (php_pool['catch_workers_output'] is defined) %}
+catch_workers_output = {{ php_pool['catch_workers_output'] }}
+{% endif %}
+
+{% if (php_pool['clear_env'] is defined) %}
+clear_env = {{ php_pool['clear_env'] }}
+{% endif %}
+
+{% if (php_pool['security.limit_extensions'] is defined) %}
+security.limit_extensions = {{ php_pool['security.limit_extensions'] }}
+{% endif %}
+
+{% if (php_pool['access.log'] is defined) %}
+access.log = {{ php_pool['access.log'] }}
+{% endif %}
+
+{% if (php_pool['access.format'] is defined) %}
+access.format = {{ php_pool['access.format'] }}
+{% endif %}
+
+; Passing environment variables and PHP settings to the pool
+{% for conf in php_pool['env_vars_php_settings'] %}
+{{ conf }}
+{% endfor %}
+
+{% endfor %}

@@ -1,0 +1,58 @@
+---
+
+- debug: msg="{{ php_version | version_compare('5.4.0', operator='lt', strict=True) }}"
+
+- name: Common - Build the service php-fpm.service configuration file | Template
+  template:
+    src=php-fpm.service.j2
+    dest="/usr/lib/systemd/system/php-fpm.service"
+  with_items:
+    - "{{ php_pools }}"
+
+- name: Common - Build the main php-fpm.conf configuration file | Template
+  template:
+    src=php-fpm.conf.j2
+    dest="{{ php_configuration_dir }}/php-fpm.conf"
+  with_items:
+    - "{{ php_pools }}"
+
+- name: Common - Build the main php pool configuration file | Template
+  template:
+    src=example.com.conf.j2
+    dest="{{ php_configuration_dir }}/php-fpm.d/www.conf"
+  with_items:
+    - "{{ php_pools }}"
+
+- name: Common - Build the php.ini configuration file | Template
+  template:
+    src=php.ini.j2
+    dest="{{ php_configuration_dir }}/php.ini"
+
+#- name: Common - Build the php process start/stop script | Template
+#  template:
+#    src="php-fpm.j2"
+#    dest="/etc/init.d/php-fpm"
+
+#- file:
+#    path: "/etc/init.d/php-fpm"
+#    mode: "0755"
+
+- name: Common - Add PHP to $PATH
+  command: echo 'pathmunge {{ php_install_dir }}/bin' > /etc/profile.d/php.sh
+
+#- name: Common - Start php-fpm
+#  service:
+#    name: php-fpm
+#    state: started
+
+- name: Common - Start php-fpm
+  systemd:
+    name: php-fpm.service
+    state: started
+    enabled: True
+
+- name: Common - PHP version
+  command: php -v
+  register: php_version
+
+- debug: msg="PHP Version = {{ php_version }}"

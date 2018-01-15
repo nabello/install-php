@@ -1,0 +1,601 @@
+###############################
+####### CORE DIRECTIVES #######
+###############################
+# http://php.net/manual/en/ini.core.php
+
+#------------------
+# Language and Misc
+#------------------
+short_open_tag={{ short_open_tag }}
+{% if php_version | version_compare('7.0.0', operator='lt', strict=True) %}
+asp_tags={{ asp_tags }}
+{% endif %}
+precision={{ precision }}
+{% if php_version | version_compare('4.3.2', operator='ge', strict=True) %}
+serialize_precision={{ serialize_precision }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='lt', strict=True) %}
+y2k_compliance={{ y2k_compliance }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='lt', strict=True) %}
+allow_call_time_pass_reference={{ allow_call_time_pass_reference }}
+{% endif %}
+{% if php_version | version_compare('4.0.1', operator='ge', strict=True) %}
+disable_functions={{ disable_functions }}
+{% endif %}
+{% if php_version | version_compare('4.3.2', operator='ge', strict=True) %}
+disable_classes={{ disable_classes }}
+{% endif %}
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+exit_on_timeout={{ exit_on_timeout }}
+{% endif %}
+expose_php={{ expose_php }}
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+zend.multibyte={{ zend_multibyte }}
+{% endif %}
+{% if (php_version | version_compare('4.3.0', operator='ge', strict=True)) and (php_version | version_compare('5.4.0', operator='lt', strict=True)) %}
+mbstring.script_encoding={{ mbstring_script_encoding }}
+{% elif php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+zend.script_encoding={{ zend_script_encoding }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+zend.signal_check={{ zend_signal_check }}
+{% endif %}
+{% if php_version | version_compare('7.0.0', operator='ge', strict=True) %}
+zend.assertions={{ zend_assertions }}
+{% endif %}
+{% if (php_version | version_compare('5.0.0', operator='ge', strict=True)) and (php_version | version_compare('5.3.0', operator='lt', strict=True)) %}
+zend.ze1_compatibility_mode={{ zend_ze1_compatibility_mode }}
+{% endif %}
+{% if (php_version | version_compare('5.1.0', operator='ge', strict=True)) and (php_version | version_compare('5.4.0', operator='lt', strict=True)) %}
+detect_unicode={{ detect_unicode }}
+{% elif php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+zend.detect-unicode={{ zend_detect_unicode }}
+{% endif %}
+
+#----------------
+# Resource Limits
+#----------------
+memory_limit={{ memory_limit }}
+
+#-------------------
+# Performance Tuning
+#-------------------
+{% if php_version | version_compare('5.1.0', operator='ge', strict=True) %}
+realpath_cache_size={{ realpath_cache_size }}
+{% endif %}
+{% if php_version | version_compare('5.1.0', operator='ge', strict=True) %}
+realpath_cache_ttl={{ realpath_cache_ttl }}
+{% endif %}
+
+#--------------
+# Data Handling
+#--------------
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+arg_separator.output="{{ arg_separator_output }}"
+{% endif %}
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+arg_separator.input="{{ arg_separator_input }}"
+{% endif %}
+variables_order={{ variables_order }}
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+request_order={{ request_order }}
+{% endif %}
+{% if php_version | version_compare('5.0.0', operator='ge', strict=True) %}
+auto_globals_jit={{ auto_globals_jit }}
+{% endif %}
+{% if php_version | version_compare('5.3.0', operator='lt', strict=True) %}
+register_globals={{ register_globals }}
+{% endif %}
+register_argc_argv={{ register_argc_argv }}
+{% if (php_version | version_compare('5.0.0', operator='ge', strict=True)) and (php_version | version_compare('5.3.0', operator='lt', strict=True)) %}
+register_long_arrays={{ register_long_arrays }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+enable_post_data_reading={{ enable_post_data_reading }}
+{% endif %}
+{% if php_version | version_compare('4.0.3', operator='ge', strict=True) %}
+post_max_size={{ post_max_size }}
+{% endif %}
+auto_prepend_file={{ auto_prepend_file }}
+auto_append_file={{ auto_append_file }}
+default_mimetype={{ default_mimetype }}
+default_charset={{ default_charset }}
+{% if php_version | version_compare('4.1.0', operator='ge', strict=True) %}
+always_populate_raw_post_data={{ always_populate_raw_post_data }}
+{% endif %}
+
+#----------------------
+# Paths and Directories
+#----------------------
+include_path={{ include_path }}
+open_basedir={{ open_basedir }}
+doc_root={{ doc_root }}
+user_dir={{ user_dir }}
+;extension_dir={{ extension_dir }}
+;extension={{ extension }}
+zend_extension={{ zend_extension }}
+zend_extension_debug={{ zend_extension_debug }}
+zend_extension_debug_ts={{ zend_extension_debug_ts }}
+zend_extension_ts={{ zend_extension_ts }}
+{% if php_version | version_compare('5.2.1', operator='ge', strict=True) %}
+cgi.check_shebang_line={{ cgi_check_shebang_line }}
+{% endif %}
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+cgi.discard_path={{ cgi_discard_path }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+cgi.fix_pathinfo={{ cgi_fix_pathinfo }}
+{% endif %}
+{% if php_version | version_compare('4.2.0', operator='ge', strict=True) %}
+cgi.force_redirect={{ cgi_force_redirect }}
+{% endif %}
+{% if php_version | version_compare('4.3.5', operator='ge', strict=True) %}
+cgi.nph={{ cgi_nph }}
+{% endif %}
+{% if php_version | version_compare('4.2.0', operator='ge', strict=True) %}
+cgi.redirect_status_env={{ cgi_redirect_status_env }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+cgi.rfc2616_headers={{ cgi_rfc2616_headers }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+fastcgi.impersonate={{ fastcgi_impersonate }}
+{% endif %}
+{% if php_version | version_compare('4.4.0', operator='ge', strict=True) %}
+fastcgi.logging={{ fastcgi_logging }}
+{% endif %}
+
+#-------------
+# File Uploads
+#-------------
+{% if php_version | version_compare('4.0.3', operator='ge', strict=True) %}
+file_uploads={{ file_uploads }}
+{% endif %}
+upload_tmp_dir={{ upload_tmp_dir }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+max_input_time={{ max_input_time }}
+{% endif %}
+{% if php_version | version_compare('5.2.3', operator='ge', strict=True) %}
+max_input_nesting_level={{ max_input_nesting_level }}
+{% endif %}
+{% if php_version | version_compare('5.3.9', operator='ge', strict=True) %}
+max_input_vars={{ max_input_vars }}
+{% endif %}
+upload_max_filesize={{ upload_max_filesize }}
+{% if php_version | version_compare('5.2.12', operator='ge', strict=True) %}
+max_file_uploads={{ max_file_uploads }}
+{% endif %}
+
+#------------
+# General SQL
+#------------
+{% if php_version | version_compare('7.2.0', operator='lt', strict=True) %}
+sql.safe_mode={{ sql_safe_mode }}
+{% endif %}
+
+
+
+
+###############################
+####### CORE EXTENSIONS #######
+###############################
+# http://php.net/manual/en/extensions.membership.php#extensions.membership.core
+
+#---------------------------
+# CORE EXTENSION - Date/Time
+#---------------------------
+# http://php.net/manual/en/datetime.configuration.php
+{% if php_version | version_compare('5.0.0', operator='ge', strict=True) %}
+date.default_latitude={{ date_default_latitude }}
+date.default_longitude={{ date_default_longitude }}
+date.sunrise_zenith={{ date_sunrise_zenith }}
+date.sunset_zenith={{ date_sunset_zenith }}
+{% endif %}
+{% if php_version | version_compare('5.1.0', operator='ge', strict=True) %}
+date.timezone={{ date_timezone }}
+{% endif %}
+
+#--------------------------------
+# CORE EXTENSION - Error Handling
+#--------------------------------
+# http://php.net/manual/en/errorfunc.configuration.php
+error_reporting={{ error_reporting }}
+display_errors={{ display_errors }}
+{% if php_version | version_compare('4.0.3', operator='ge', strict=True) %}
+display_startup_errors={{ display_startup_errors }}
+{% endif %}
+log_errors={{ log_errors }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+log_errors_max_len={{ log_errors_max_len }}
+ignore_repeated_errors={{ ignore_repeated_errors }}
+ignore_repeated_source={{ ignore_repeated_source }}
+report_memleaks={{ report_memleaks }}
+{% endif %}
+track_errors={{ track_errors }}
+{% if php_version | version_compare('4.0.2', operator='ge', strict=True) %}
+html_errors={{ html_errors }}
+{% endif %}
+{% if php_version | version_compare('4.1.0', operator='ge', strict=True) %}
+xmlrpc_errors={{ xmlrpc_errors }}
+xmlrpc_error_number={{ xmlrpc_error_number }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+docref_root={{ docref_root }}
+{% endif %}
+{% if php_version | version_compare('4.3.2', operator='ge', strict=True) %}
+docref_ext={{ docref_ext }}
+{% endif %}
+error_append_string={{ error_append_string }}
+error_prepend_string={{ error_prepend_string }}
+error_log={{ error_log }}
+
+#----------------------------
+# CORE EXTENSION - Filesystem
+#----------------------------
+# http://php.net/manual/en/filesystem.configuration.php
+allow_url_fopen={{ allow_url_fopen }}
+{% if php_version | version_compare('5.2.0', operator='ge', strict=True) %}
+allow_url_include={{ allow_url_include }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+user_agent={{ user_agent }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+default_socket_timeout={{ default_socket_timeout }}
+{% endif %}
+from={{ from }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+auto_detect_line_endings={{ auto_detect_line_endings }}
+{% endif %}
+
+#------------------------
+# CORE EXTENSION - Filter
+#------------------------
+# http://php.net/manual/en/filter.configuration.php
+{% if php_version | version_compare('5.2.0', operator='ge', strict=True) %}
+filter.default={{ filter_default }}
+filter.default_flags={{ filter_default_flags }}
+{% endif %}
+
+#----------------------------------
+# CORE EXTENSION - PHP Options/Info
+#----------------------------------
+# http://php.net/manual/en/info.configuration.php
+assert.active={{ assert_active }}
+assert.bail={{ assert_bail }}
+assert.warning={{ assert_warning }}
+assert.callback={{ assert_callback }}
+assert.quiet_eval={{ assert_quiet_eval }}
+{% if php_version | version_compare('7.0.0', operator='ge', strict=True) %}
+assert.exception={{ assert_exception }}
+{% endif %}
+enable_dl={{ enable_dl }}
+max_execution_time={{ max_execution_time }}
+{% if php_version | version_compare('5.3.0', operator='lt', strict=True) %}
+magic_quotes_gpc={{ magic_quotes_gpc }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='lt', strict=True) %}
+magic_quotes_runtime={{ magic_quotes_runtime }}
+{% endif %}
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+zend.enable_gc={{ zend_enable_gc }}
+{% endif %}
+
+#----------------------
+# CORE EXTENSION - Mail
+#----------------------
+# http://php.net/manual/en/mail.configuration.php
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+mail.add_x_header={{ mail_add_x_header }}
+mail.log={{ mail_log }}
+{% endif %}
+{% if php_version | version_compare('5.0.0', operator='ge', strict=True) %}
+mail.force_extra_parameters={{ mail_force_extra_parameters }}
+{% endif %}
+SMTP={{ SMTP }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+smtp_port={{ smtp_port }}
+{% endif %}
+sendmail_from={{ sendmail_from }}
+sendmail_path={{ sendmail_path }}
+
+#-----------------------
+# CORE EXTENSION - Misc.
+#-----------------------
+# http://php.net/manual/en/misc.configuration.php
+ignore_user_abort={{ ignore_user_abort }}
+highlight.string={{ highlight_string }}
+highlight.comment={{ highlight_comment }}
+highlight.keyword={{ highlight_keyword }}
+highlight.bg={{ highlight_bg }}
+highlight.default={{ highlight_default }}
+highlight.html={{ highlight_html }}
+browscap={{ browscap }}
+
+#-------------------------
+# CORE EXTENSION - Network
+#-------------------------
+# http://php.net/manual/en/network.configuration.php
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+define_syslog_variables={{ define_syslog_variables }}
+{% endif %}
+
+#--------------------------------
+# CORE EXTENSION - Output Control
+#--------------------------------
+# http://php.net/manual/en/outcontrol.configuration.php
+output_buffering={{ output_buffering }}
+{% if php_version | version_compare('4.0.4', operator='ge', strict=True) %}
+output_handler={{ output_handler }}
+{% endif %}
+implicit_flush={{ implicit_flush }}
+{% if php_version | version_compare('4.0.4', operator='ge', strict=True) %}
+url_rewriter.tags="{{ url_rewriter_tags }}"
+{% endif %}
+{% if php_version | version_compare('7.1.0', operator='ge', strict=True) %}
+url_rewriter.hosts="{{ url_rewriter_hosts }}"
+{% endif %}
+
+#----------------------
+# CORE EXTENSION - Phar
+#----------------------
+# http://php.net/manual/en/phar.configuration.php
+phar.readonly={{ phar_readonly }}
+phar.require_hash={{ phar_require_hash }}
+{% if phar_version | version_compare('1.1.0', operator='ge', strict=True) %}
+phar.extract_list={{ phar_extract_list }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+phar.cache_list={{ phar_cache_list }}
+{% endif %}
+
+#--------------------------
+# CORE EXTENSION - Sessions
+#--------------------------
+# http://php.net/manual/en/session.configuration.php
+session.save_path={{ session_save_path }}
+session.name={{ session_name }}
+session.save_handler={{ session_save_handler }}
+session.auto_start={{ session_auto_start }}
+session.gc_probability={{ session_gc_probability }}
+{% if php_version | version_compare('4.3.2', operator='ge', strict=True) %}
+session.gc_divisor={{ session_gc_divisor }}
+{% endif %}
+session.gc_maxlifetime={{ session_gc_maxlifetime }}
+session.serialize_handler={{ session_serialize_handler }}
+session.cookie_lifetime={{ session_cookie_lifetime }}
+session.cookie_path={{ session_cookie_path }}
+session.cookie_domain={{ session_cookie_domain }}
+{% if php_version | version_compare('4.0.4', operator='ge', strict=True) %}
+session.cookie_secure={{ session_cookie_secure }}
+{% endif %}
+{% if php_version | version_compare('5.2.0', operator='ge', strict=True) %}
+session.cookie_httponly={{ session_cookie_httponly }}
+{% endif %}
+{% if php_version | version_compare('5.5.2', operator='ge', strict=True) %}
+session.use_strict_mode={{ session_use_strict_mode }}
+{% endif %}
+session.use_cookies={{ session_use_cookies }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+session.use_only_cookies={{ session_use_only_cookies }}
+{% endif %}
+session.referer_check={{ session_referer_check }}
+session.cache_limiter={{ session_cache_limiter }}
+session.cache_expire={{ session_cache_expire }}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+session.use_trans_sid={{ session_use_trans_sid }}
+{% endif %}
+{% if php_version | version_compare('7.1.0', operator='ge', strict=True) %}
+session.trans_sid_tags="{{ session_trans_sid_tags }}"
+session.trans_sid_hosts={{ session_trans_sid_hosts }}
+session.sid_length={{ session_sid_length }}
+session.sid_bits_per_character={{ session_sid_bits_per_character }}
+{% endif %}
+{% if php_version | version_compare('5.4.0', operator='ge', strict=True) %}
+session.upload_progress.enabled={{ session_upload_progress_enabled }}
+session.upload_progress.cleanup={{ session_upload_progress_cleanup }}
+session.upload_progress.prefix={{ session_upload_progress_prefix }}
+session.upload_progress.name={{ session_upload_progress_name }}
+session.upload_progress.freq={{ session_upload_progress_freq }}
+session.upload_progress.min_freq={{ session_upload_progress_min_freq }}
+{% endif %}
+{% if php_version | version_compare('7.0.0', operator='ge', strict=True) %}
+session.lazy_write={{ session_lazy_write }}
+{% endif %}
+{% if (php_version | version_compare('5.0.0', operator='ge', strict=True)) and (php_version | version_compare('7.1.0', operator='lt', strict=True)) %}
+session.hash_function={{ session_hash_function }}
+session.hash_bits_per_character={{ session_hash_bits_per_character }}
+{% endif %}
+{% if php_version | version_compare('7.1.0', operator='lt', strict=True) %}
+session.entropy_file={{ session_entropy_file }}
+session.entropy_length={{ session_entropy_length }}
+{% endif %}
+{% if (php_version | version_compare('4.3.0', operator='ge', strict=True)) and (php_version | version_compare('5.4.0', operator='lt', strict=True)) %}
+session.bug_compat_42={{ session_bug_compat_42 }}
+session.bug_compat_warn={{ session_bug_compat_warn }}
+{% endif %}
+
+#-----------------------------------
+# CORE EXTENSION - Variable handling
+#-----------------------------------
+# http://php.net/manual/en/var.configuration.php
+{% if php_version | version_compare('4.2.0', operator='ge', strict=True) %}
+unserialize_callback_func={{ unserialize_callback_func }}
+{% endif %}
+
+
+
+
+################################
+###### BUNDLED EXTENSIONS ######
+################################
+# http://php.net/manual/en/extensions.membership.php#extensions.membership.bundled
+
+#---------------------------
+# BUNDLED EXTENSION - Apache
+#---------------------------
+# http://php.net/manual/en/apache.configuration.php
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+engine={{ engine }}
+child_terminate={{ child_terminate }}
+last_modified={{ last_modified }}
+xbithack={{ xbithack }}
+{% endif %}
+
+#----------------------------
+# BUNDLED EXTENSION - BC Math
+#----------------------------
+# http://php.net/manual/en/bc.configuration.php
+bcmath.scale={{ bcmath_scale }}
+
+#------------------------
+# BUNDLED EXTENSION - COM
+#------------------------
+# http://php.net/manual/en/com.configuration.php
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+com.allow_dcom={{ com_allow_dcom }}
+{% endif %}
+{% if php_version | version_compare('4.1.0', operator='ge', strict=True) %}
+com.autoregister_typelib={{ com_autoregister_typelib }}
+com.autoregister_verbose={{ com_autoregister_verbose }}
+com.autoregister_casesensitive={{ com_autoregister_casesensitive }}
+{% endif %}
+{% if php_version | version_compare('5.0.0', operator='ge', strict=True) %}
+com.code_page={{ com_code_page }}
+{% endif %}
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+com.typelib_file={{ com_typelib_file }}
+{% endif %}
+
+#------------------------
+# BUNDLED EXTENSION - DBA
+#------------------------
+# http://php.net/manual/en/dba.configuration.php
+{% if php_version | version_compare('4.3.3', operator='ge', strict=True) %}
+dba.default_handler={{ dba_default_handler }}
+{% endif %}
+
+#-------------------------
+# BUNDLED EXTENSION - Exif
+#-------------------------
+# http://php.net/manual/en/exif.configuration.php
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+exif.encode_unicode={{ exif_encode_unicode }}
+exif.decode_unicode_motorola={{ exif_decode_unicode_motorola }}
+exif.decode_unicode_intel={{ exif_decode_unicode_intel }}
+exif.encode_jis={{ exif_encode_jis }}
+exif.decode_jis_motorola={{ exif_decode_jis_motorola }}
+exif.decode_jis_intel={{ exif_decode_jis_intel }}
+{% endif %}
+
+#--------------------------
+# BUNDLED EXTENSION - iconv
+#--------------------------
+# http://php.net/manual/en/iconv.configuration.php
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+iconv.input_encoding={{ iconv_input_encoding }}
+iconv.output_encoding={{ iconv_output_encoding }}
+iconv.internal_encoding={{ iconv_internal_encoding }}
+{% endif %}
+
+#-----------------------
+# BUNDLED EXTENSION - GD
+#-----------------------
+# http://php.net/manual/en/image.configuration.php
+{% if php_version | version_compare('5.1.3', operator='ge', strict=True) %}
+gd.jpeg_ignore_warning={{ gd_jpeg_ignore_warning }}
+{% endif %}
+
+#-------------------------
+# BUNDLED EXTENSION - intl
+#-------------------------
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+intl.default_locale={{ intl_default_locale }}
+intl.error_level={{ intl_error_level }}
+{% endif %}
+{% if php_version | version_compare('5.5.0', operator='ge', strict=True) %}
+intl.use_exceptions={{ intl_use_exceptions }}
+{% endif %}
+
+#-------------------------------------
+# BUNDLED EXTENSION - Multibyte String
+#-------------------------------------
+# http://php.net/manual/en/mbstring.configuration.php
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+mbstring.language={{ mbstring_language }}
+{% endif %}
+{% if php_version | version_compare('4.0.6', operator='ge', strict=True) %}
+mbstring.detect_order={{ mbstring_detect_order }}
+mbstring.http_input={{ mbstring_http_input }}
+mbstring.http_output={{ mbstring_http_output }}
+mbstring.internal_encoding={{ mbstring_internal_encoding }}
+mbstring.substitute_character={{ mbstring_substitute_character }}
+{% endif %}
+{% if php_version | version_compare('4.2.0', operator='ge', strict=True) %}
+mbstring.func_overload={{ mbstring_func_overload }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+mbstring.encoding_translation={{ mbstring_encoding_translation }}
+{% endif %}
+{% if php_version | version_compare('5.1.2', operator='ge', strict=True) %}
+mbstring.strict_detection={{ mbstring_strict_detection }}
+{% endif %}
+{% if php_version | version_compare('5.3.0', operator='ge', strict=True) %}
+mbstring.http_output_conv_mimetypes="{{ mbstring_http_output_conv_mimetypes }}"
+{% endif %}
+
+#--------------------------
+# BUNDLED EXTENSION - NSAPI
+#--------------------------
+# http://php.net/manual/en/nsapi.configuration.php
+{% if php_version | version_compare('4.3.3', operator='ge', strict=True) %}
+nsapi.read_timeout={{ nsapi_read_timeout }}
+{% endif %}
+
+#-------------------------
+# BUNDLED EXTENSION - PCRE
+#-------------------------
+# http://php.net/manual/en/pcre.configuration.php
+{% if php_version | version_compare('5.2.0', operator='ge', strict=True) %}
+pcre.backtrack_limit={{ pcre_backtrack_limit }}
+pcre.recursion_limit={{ pcre_recursion_limit }}
+{% endif %}
+{% if php_version | version_compare('7.0.0', operator='ge', strict=True) %}
+pcre.jit={{ pcre_jit }}
+{% endif %}
+
+#------------------------
+# BUNDLED EXTENSION - PDO
+#------------------------
+# http://php.net/manual/en/pdo.configuration.php
+# Available since PHP 5.1.0.
+# pdo.dsn.*
+# e.g.
+# pdo.dsn.mydb="mysql:dbname=testdb;host=localhost"
+
+#------------------------------
+# BUNDLED EXTENSION - Semaphore
+#------------------------------
+# http://php.net/manual/en/sem.configuration.php
+sysvshm.init_mem={{ sysvshm_init_mem }}
+
+#----------------------------
+# BUNDLED EXTENSION - SQLite3
+#----------------------------
+# http://php.net/manual/en/sqlite3.configuration.php
+{% if php_version | version_compare('5.3.11', operator='ge', strict=True) %}
+sqlite3.extension_dir={{ sqlite3_extension_dir }}
+{% endif %}
+
+#-------------------------
+# BUNDLED EXTENSION - Zlib
+#-------------------------
+# http://php.net/manual/en/zlib.configuration.php
+{% if php_version | version_compare('4.0.5', operator='ge', strict=True) %}
+zlib.output_compression={{ zlib_output_compression }}
+{% endif %}
+{% if php_version | version_compare('4.3.0', operator='ge', strict=True) %}
+zlib.output_compression_level={{ zlib_output_compression_level }}
+zlib.output_handler={{ zlib_output_handler }}
+{% endif %}

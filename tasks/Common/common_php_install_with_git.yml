@@ -1,0 +1,36 @@
+---
+# Make sure necessary directories exist
+- file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ compiling_path }}"
+    - "{{ php_install_dir }}"
+    - "{{ php_configuration_dir }}/php.d"
+    - "{{ php_configuration_dir }}/php-fpm.d"
+    - "{{ php_fpm_log_dir }}"
+    - "{{ php_fpm_session_save_path }}"
+    - "{{ php_fpm_soap_wsdl_cache_dir }}"
+    - "{{ php_fpm_opcache_file_cache }}"
+
+# Clone repositories php-src
+- name: Common => git - Clone repositories php-src
+  git:
+    repo: "{{item.url}}"
+    dest: "{{ compiling_path }}/{{ item.name }}"
+    version: "{{item.tag}}"
+    clone: yes
+    update: no
+  with_items:
+    - "{{ php_repository }}"
+
+# Configure & Make php
+- name: Common => git - Configure & Make php
+  command: "{{ item }}"
+  args:
+    chdir: "{{ compiling_path }}/php-src"
+  with_items:
+    - "./buildconf"
+    - "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}"
+    - "make"
+    - "make install"
