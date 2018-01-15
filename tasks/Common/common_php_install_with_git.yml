@@ -9,6 +9,7 @@
     - "{{ php_configuration_dir }}/php.d"
     - "{{ php_configuration_dir }}/php-fpm.d"
     - "{{ php_fpm_log_dir }}"
+    - "{{ php_fpm_run_dir }}"
     - "{{ php_fpm_session_save_path }}"
     - "{{ php_fpm_soap_wsdl_cache_dir }}"
     - "{{ php_fpm_opcache_file_cache }}"
