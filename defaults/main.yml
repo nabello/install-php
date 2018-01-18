@@ -8,6 +8,7 @@ required_packages: ['epel-release', 'vim', 'git', 'wget', 'gcc',
                     'pcre-devel', 'openssl-devel', 'expat-devel', 'bzip2-devel', 'curl-devel', 'libjpeg-devel',
                     'libpng-devel', 'freetype-devel', 'libc-client-devel', 'libmcrypt-devel', 'libxml2-devel']
 compiling_path: '/home/sources'
+build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make", "make install"]
 php_install_dir: '/usr'
 php_configuration_dir: '/etc'
 php_fpm_log_dir: '/var/log/php-fpm'
