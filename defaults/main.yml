@@ -4,9 +4,6 @@ install_type: 'git'
 php_version: '7.2'
 phar_version: '1.1.0'
 php_repository: {name: 'php-src',url: 'https://github.com/php/php-src.git',tag: "PHP-{{ php_version }}"}
-required_packages: ['epel-release', 'vim', 'git', 'wget', 'gcc',
-                    'pcre-devel', 'openssl-devel', 'expat-devel', 'bzip2-devel', 'curl-devel', 'libjpeg-devel',
-                    'libpng-devel', 'freetype-devel', 'libc-client-devel', 'libmcrypt-devel', 'libxml2-devel']
 compiling_path: '/home/sources'
 php_install_dir: '/usr'
 php_configuration_dir: '/etc'

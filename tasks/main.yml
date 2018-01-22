@@ -2,9 +2,6 @@
 ###########################
 # Install php from source #
 ###########################
-- include: Redhat/redhat_prerequisites.yml
-  when: ansible_os_family == "RedHat"
-
 - include: Common/common_php_install_with_git.yml
   when: install_type == "git"
 
