@@ -1,5 +1,5 @@
-{% if (zend_extension is defined) %}
-zend_extension={{ zend_extension }}
+{% if (opcache_zend_extension is defined) %}
+zend_extension={{ opcache_zend_extension }}
 {% endif %}
 {% if (opcache_enable is defined) %}
 opcache.enable={{ opcache_enable}}

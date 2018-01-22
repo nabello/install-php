@@ -451,7 +451,7 @@ zlib_output_handler: ''
 #----------------------------
 # BUNDLED EXTENSION - OPcache
 #----------------------------
-zend_extension: 'opcache.so'
+opcache_zend_extension: 'opcache.so'
 opcache_enable: '0'
 #opcache_enable_cli: '0'
 opcache_memory_consumption: '128'
