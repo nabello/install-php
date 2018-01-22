@@ -8,7 +8,6 @@ required_packages: ['epel-release', 'vim', 'git', 'wget', 'gcc',
                     'pcre-devel', 'openssl-devel', 'expat-devel', 'bzip2-devel', 'curl-devel', 'libjpeg-devel',
                     'libpng-devel', 'freetype-devel', 'libc-client-devel', 'libmcrypt-devel', 'libxml2-devel']
 compiling_path: '/home/sources'
-build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make", "make install"]
 php_install_dir: '/usr'
 php_configuration_dir: '/etc'
 php_fpm_log_dir: '/var/log/php-fpm'
@@ -22,6 +21,7 @@ php_core_extension_options: '--with-pcre-regex'
 php_bundled_extension_options: "--enable-bcmath --enable-ftp --enable-exif --enable-sockets --enable-calendar --enable-mbstring --enable-mbregex --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-opcache --enable-fpm --sysconfdir={{ php_configuration_dir }} --with-gd --with-jpeg-dir --with-png-dir --with-freetype-dir --with-zlib-dir --with-zlib --with-imap --with-imap-ssl --with-kerberos --with-xmlrpc"
 php_external_extension_options: '--enable-soap --enable-zip --with-bz2 --with-curl  --with-mhash --with-openssl --with-mysql-sock=/tmp/mysql.sock --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd'
 php_configure_options: "--with-libdir=lib64 --enable-inline-optimization {{ php_core_extension_options }} {{ php_bundled_extension_options }} {{ php_external_extension_options }}"
+build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make", "make install"]
 
 
 # PHP fpm configuration of pools
@@ -450,3 +450,38 @@ sqlite3_extension_dir: ''
 zlib_output_compression: '0'
 zlib_output_compression_level: '-1'
 zlib_output_handler: ''
+
+#----------------------------
+# BUNDLED EXTENSION - OPcache
+#----------------------------
+zend_extension: 'opcache.so'
+opcache.enable: '0'
+#opcache.enable_cli: '0'
+opcache.memory_consumption: '128'
+opcache.interned_strings_buffer: '8'
+opcache.max_accelerated_files: '4000'
+#opcache.max_wasted_percentage: '5'
+#opcache.use_cwd: '1'
+#opcache.validate_timestamps: '1'
+#opcache.revalidate_freq: '2'
+#opcache.revalidate_path: '0'
+#opcache.save_comments: '1'
+#opcache.fast_shutdown: '0'
+#opcache.enable_file_override: '0'
+#opcache.optimization_level: '0xffffffff'
+#opcache.inherited_hack: '1'
+#opcache.dups_fix: '0'
+opcache.blacklist_filename: '/etc/php.d/opcache*.blacklist'
+#opcache.max_file_size: '0'
+#opcache.consistency_checks: '0'
+#opcache.force_restart_timeout: '180'
+#opcache.error_log: ''
+#opcache.log_verbosity_level: '1'
+#opcache.preferred_memory_model: ''
+#opcache.protect_memory: '0'
+#opcache.restrict_api: ''
+#opcache.file_cache: ''
+#opcache.file_cache_only: '0'
+#opcache.file_cache_consistency_checks: '1'
+#opcache.huge_code_pages: '1'
+opcache.blacklist: []

@@ -1,0 +1,16 @@
+---
+# Create OPcache configuration
+- name: Common - Create OPcache configuration
+  template:
+    src=10-opcache.ini.j2
+    dest="{{ php_configuration_dir }}/php.d/10-opcache.ini"
+  when: opcache.enable == '1'
+
+
+
+ # Create OPcache blacklist
+- name: Common - Create OPcache blacklist
+  template:
+    src=opcache-default.blacklist.j2
+    dest="{{ php_configuration_dir }}/php.d/opcache-default.blacklist"
+  when: opcache.enable == '1'
