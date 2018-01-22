@@ -4,7 +4,7 @@
   template:
     src=10-opcache.ini.j2
     dest="{{ php_configuration_dir }}/php.d/10-opcache.ini"
-  when: opcache.enable == '1'
+  when: opcache_enable == '1'
 
 
 
@@ -13,4 +13,4 @@
   template:
     src=opcache-default.blacklist.j2
     dest="{{ php_configuration_dir }}/php.d/opcache-default.blacklist"
-  when: opcache.enable == '1'
+  when: opcache_enable == '1'
