@@ -2,9 +2,9 @@
 ###########################
 # Install php from source #
 ###########################
-- include: Common/common_php_install_with_git.yml
+- include_tasks: Common/common_php_install_with_git.yml
   when: install_type == "git"
 
-- include: Common/common_php_configure.yml
+- include_tasks: Common/common_php_configure.yml
 
-- include: Common/common_configure_opcache.yml
+- include_tasks: Common/common_configure_opcache.yml

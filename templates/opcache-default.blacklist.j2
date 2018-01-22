@@ -9,6 +9,6 @@
 ;    compile time evaluation.
 ; 3) Code that triggers an OPcache bug.
 
-{% for path in opcache.blacklist %}
+{% for path in opcache_blacklist %}
 {{ path }}
 {% endfor %}
