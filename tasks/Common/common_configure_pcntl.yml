@@ -1,0 +1,7 @@
+---
+# Create PCNTL configuration
+- name: Common - Create PCNTL configuration
+  template:
+    src=pcntl.ini.j2
+    dest="{{ php_configuration_dir }}/php.d/pcntl.ini"
+  when: pcntl_enable == '1'
