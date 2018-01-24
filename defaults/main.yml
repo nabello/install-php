@@ -482,9 +482,3 @@ opcache_blacklist_filename: '/etc/php.d/opcache*.blacklist'
 #opcache_file_cache_consistency_checks: '1'
 #opcache_huge_code_pages: '1'
 opcache_blacklist: []
-
-#--------------------------
-# BUNDLED EXTENSION - PCNTL
-#--------------------------
-pcntl_extension: 'pcntl.so'
-pcntl_enable: '0'

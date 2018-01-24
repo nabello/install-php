@@ -8,5 +8,3 @@
 - include_tasks: Common/common_php_configure.yml
 
 - include_tasks: Common/common_configure_opcache.yml
-
-- include_tasks: Common/common_configure_pcntl.yml
