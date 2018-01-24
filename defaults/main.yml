@@ -486,5 +486,5 @@ opcache_blacklist: []
 #--------------------------
 # BUNDLED EXTENSION - PCNTL
 #--------------------------
-pcntl_zend_extension: 'pcntl.so'
+pcntl_extension: 'pcntl.so'
 pcntl_enable: '0'
