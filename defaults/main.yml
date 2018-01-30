@@ -482,3 +482,6 @@ opcache_blacklist_filename: '/etc/php.d/opcache*.blacklist'
 #opcache_file_cache_consistency_checks: '1'
 #opcache_huge_code_pages: '1'
 opcache_blacklist: []
+
+# Container options
+container_mode: 'off'
