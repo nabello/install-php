@@ -7,11 +7,7 @@ php_repository: {name: 'php-src',url: 'https://github.com/php/php-src.git',tag: 
 compiling_path: '/home/sources'
 php_install_dir: '/usr'
 php_configuration_dir: '/etc'
-php_fpm_log_dir: '/var/log/php-fpm'
-php_fpm_run_dir: '/run/php-fpm'
-php_fpm_session_save_path: '/var/lib/php/fpm/session'
-php_fpm_soap_wsdl_cache_dir: '/var/lib/php/fpm/wsdlcache'
-php_fpm_opcache_file_cache: '/var/lib/php/fpm/opcache'
+
 
 # Option used to configure our php compilation
 php_core_extension_options: '--with-pcre-regex'
@@ -21,28 +17,65 @@ php_configure_options: "--with-libdir=lib64 --enable-inline-optimization {{ php_
 build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make", "make install"]
 
 
-# PHP fpm configuration of pools
-php_pools:
-  - {name: 'www',
-#     prefix: '/path/to/pools/$pool',
-     user: 'daemon',
-     group: 'daemon',
-     listen_ip: '127.0.0.1',
-     listen_port: '9000',
+
+
+###########
+###########
+# PHP-FPM #
+###########
+###########
+
+##################################
+####### MAIN CONFIGURATION #######
+##################################
+php_fpm_log_dir: '/var/log/php-fpm'
+php_fpm_run_dir: '/run/php-fpm'
+php_fpm_session_save_path: '/var/lib/php/fpm/session'
+php_fpm_soap_wsdl_cache_dir: '/var/lib/php/fpm/wsdlcache'
+php_fpm_opcache_file_cache: '/var/lib/php/fpm/opcache'
+
+#php_fpm_pid: "{{ php_fpm_run_dir }}/php-fpm.pid"
+#php_fpm_error_log: "{{ php_fpm_log_dir }}/php-fpm.log"
+#php_fpm_syslog_facility: 'daemon'
+#php_fpm_syslog_ident: 'php-fpm'
+#php_fpm_log_level: 'notice'
+#php_fpm_emergency_restart_threshold: '0'
+#php_fpm_emergency_restart_interval: '0'
+#php_fpm_process_control_timeout: '0'
+#php_fpm_process_max: '0'
+#php_fpm_process_priority: '-19'
+#php_fpm_daemonize: 'yes'
+#php_fpm_rlimit_files: '1024'
+#php_fpm_rlimit_core: '0'
+#php_fpm_events_mechanism: 'epoll'
+#php_fpm_systemd_interval: '10'
+
+
+
+##################################
+####### POOL CONFIGURATION #######
+##################################
+#php_pools:
+#  - {name: 'www',
+##     prefix: '/path/to/pools/$pool',
+#     user: 'daemon',
+#     group: 'daemon',
+#     listen_ip: '127.0.0.1',
+#     listen_port: '9000',
 #     listen_socket: {{ php_fpm_run_dir }}/www.sock,
 #     listen.backlog: '511',
 #     listen.owner: 'apache',
 #     listen.group: 'apache',
-     listen.mode: '0660',
+#     listen.mode: '0660',
 #     listen.acl_users: '',
 #     listen.acl_groups: '',
-     listen.allowed_clients: '127.0.0.1',
+#     listen.allowed_clients: '127.0.0.1',
 #     process.priority: '-19',
-     pm: 'dynamic',
-     pm.max_children: '50',
-     pm.start_servers: '5',
-     pm.min_spare_servers: '5',
-     pm.max_spare_servers: '35',
+#     pm: 'dynamic',
+#     pm.max_children: '50',
+#     pm.start_servers: '5',
+#     pm.min_spare_servers: '5',
+#     pm.max_spare_servers: '35',
 #     pm.process_idle_timeout: '10s',
 #     pm.max_requests: '500',
 #     pm.status_path: '/status',
@@ -50,7 +83,8 @@ php_pools:
 #     ping.response: 'pong',
 #     access.log: 'log/$pool.access.log',
 #     access.format: '"%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"',
-     slowlog: "{{ php_fpm_log_dir }}/www-slow.log",
+#     slowlog: "{{ php_fpm_log_dir }}/www-slow.log",
+#     catch_workers_output: 'no',
 #     request_slowlog_timeout: '0',
 #     request_terminate_timeout: '0',
 #     rlimit_files: '1024',
@@ -60,28 +94,32 @@ php_pools:
 #     catch_workers_output: 'yes',
 #     clear_env: 'no',
 #     security.limit_extensions: '.php .php3 .php4 .php5 .php7',
-     env_vars_php_settings: [
-#                             'env[HOSTNAME] = $HOSTNAME',
-#                             'env[PATH] = /usr/local/bin:/usr/bin:/bin',
-#                             'env[TMP] = /tmp',
-#                             'env[TMPDIR] = /tmp',
-#                             'env[TEMP] = /tmp',
-#                             'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com',
-#                             'php_flag[display_errors] = off',
-                             "php_admin_value[error_log] = {{ php_fpm_log_dir }}/www-error.log",
-                             'php_admin_flag[log_errors] = on',
-#                             'php_admin_value[memory_limit] = 128M',
-                             'php_value[session.save_handler] = files',
-                             "php_value[session.save_path]    = {{ php_fpm_session_save_path }}",
-                             "php_value[soap.wsdl_cache_dir]  = {{ php_fpm_soap_wsdl_cache_dir }}"
-#                             "php_value[opcache.file_cache]  = {{ php_fpm_opcache_file_cache }}"
-                             ]
-     }
+#     env_vars_php_settings: [
+##                             'env[HOSTNAME] = $HOSTNAME',
+##                             'env[PATH] = /usr/local/bin:/usr/bin:/bin',
+##                             'env[TMP] = /tmp',
+##                             'env[TMPDIR] = /tmp',
+##                             'env[TEMP] = /tmp',
+##                             'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com',
+##                             'php_flag[display_errors] = off',
+#                             "php_admin_value[error_log] = {{ php_fpm_log_dir }}/www-error.log",
+#                             'php_admin_flag[log_errors] = on',
+##                             'php_admin_value[memory_limit] = 128M',
+#                             'php_value[session.save_handler] = files',
+#                             "php_value[session.save_path]    = {{ php_fpm_session_save_path }}",
+#                             "php_value[soap.wsdl_cache_dir]  = {{ php_fpm_soap_wsdl_cache_dir }}"
+##                             "php_value[opcache.file_cache]  = {{ php_fpm_opcache_file_cache }}"
+#                             ]
+#     }
 
 
 
 
-# php.ini
+###########
+###########
+# PHP.INI #
+###########
+###########
 # http://php.net/manual/en/ini.list.php
 
 ###############################
