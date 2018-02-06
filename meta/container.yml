@@ -1,5 +1,5 @@
 from: 'centos:7'
 ports:
-- 8000:8000
-user: 'nginx'
-command: ['/usr/bin/dumb-init', 'php-fpm']
+- 9000:9000
+user: 'root'
+command: ['/bin/sh', '-ac', '/usr/sbin/php-fpm -R']
