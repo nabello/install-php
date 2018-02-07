@@ -522,4 +522,4 @@ opcache_blacklist_filename: '/etc/php.d/opcache*.blacklist'
 opcache_blacklist: []
 
 # Container options
-container_mode: 'off'
+container_mode: False

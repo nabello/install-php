@@ -50,7 +50,7 @@
     name: php-fpm.service
     state: started
     enabled: True
-  when: container_mode == 'off'
+  when: not container_mode| bool
 
 - name: Common - PHP version
   command: php -v
