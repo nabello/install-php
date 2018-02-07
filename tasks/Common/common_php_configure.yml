@@ -57,3 +57,8 @@
   register: php_version
 
 - debug: msg="PHP Version = {{ php_version }}"
+
+- name: Common - Clear source files
+  file:
+    path: "{{ compiling_path }}"
+    state: absent
