@@ -62,3 +62,11 @@
   file:
     path: "{{ compiling_path }}"
     state: absent
+
+- name: Common - Clean yum cache
+  command: yum clean all
+
+- name: Common - Clear cached yum files
+  file:
+    path: "/var/cache/yum"
+    state: absent
