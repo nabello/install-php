@@ -13,7 +13,7 @@ php_configuration_dir: '/etc'
 php_core_extension_options: '--with-pcre-regex'
 php_bundled_extension_options: "--enable-json --enable-pcntl --enable-bcmath --enable-ftp --enable-exif --enable-sockets --enable-calendar --enable-mbstring --enable-mbregex --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-opcache --enable-fpm --sysconfdir={{ php_configuration_dir }} --with-gd --with-jpeg-dir --with-png-dir --with-freetype-dir --with-zlib-dir --with-zlib --with-imap --with-imap-ssl --with-kerberos --with-xmlrpc"
 php_external_extension_options: '--enable-soap --enable-zip --with-bz2 --with-curl  --with-mhash --with-openssl --with-mysql-sock=/tmp/mysql.sock --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd'
-php_configure_options: "--with-libdir=lib64 --enable-inline-optimization {{ php_core_extension_options }} {{ php_bundled_extension_options }} {{ php_external_extension_options }}"
+php_configure_options: "--with-config-file-path {{ php_configuration_dir }} --with-libdir=lib64 --enable-inline-optimization {{ php_core_extension_options }} {{ php_bundled_extension_options }} {{ php_external_extension_options }}"
 build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make", "make install"]
 
 
