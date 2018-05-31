@@ -1,0 +1,18 @@
+---
+
+- name: Create group used to run php-fpm
+  group:
+    name: "{{ php_fpm_group }}"
+    state: present
+    system: yes
+
+- name: Create user used to run php-fpm
+  user:
+    name: "{{ php_fpm_user }}"
+    groups:
+     - "{{ php_fpm_group }}"
+     - root
+    state: present
+    shell: /bin/bash
+    system: yes
+    createhome: no

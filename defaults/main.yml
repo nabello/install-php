@@ -17,6 +17,9 @@ php_external_extension_options: '--enable-soap --enable-zip --with-bz2 --with-cu
 php_configure_options: "--with-config-file-path={{ php_configuration_dir }} --with-libdir=lib64 --enable-inline-optimization {{ php_core_extension_options }} {{ php_bundled_extension_options }} {{ php_external_extension_options }}"
 build_php_commands: ['./buildconf --force', "./configure --prefix={{ php_install_dir }} --with-config-file-scan-dir={{ php_configuration_dir }}/php.d {{ php_configure_options }}", "make -j {{ php_number_of_compile_jobs }}", "make install"]
 
+# User/group
+php_fpm_user: 'phpfpm'
+php_fpm_group: 'phpfpm'
 
 
 ###########
